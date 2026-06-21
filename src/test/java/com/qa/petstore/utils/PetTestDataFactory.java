@@ -11,8 +11,13 @@ public final class PetTestDataFactory {
 
     private static final long MIN_ID = 1_000_000_000L;
     private static final long MAX_ID = 1_999_999_999L;
+    private static final String MALFORMED_PET_JSON = "{ \"name\": \"broken\", \"status\": ";
 
     private PetTestDataFactory() {
+    }
+
+    public static String malformedPetJson() {
+        return MALFORMED_PET_JSON;
     }
 
     public static Pet buildPet(String name, String status) {

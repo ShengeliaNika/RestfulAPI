@@ -49,6 +49,12 @@
             <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -114,6 +120,28 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.8.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-cucumber-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>Pet Store API Test Automation Framework</projectName>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <jsonFiles>
+                                <param>**/cucumber-reports/cucumber.json</param>
+                            </jsonFiles>
+                            <checkBuildResult>false</checkBuildResult>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

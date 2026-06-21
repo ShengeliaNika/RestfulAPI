@@ -14,6 +14,7 @@ Feature: Pet resource management
     Then the response status code should be 200
     And the response content type should be "application/json"
     And the response body should contain the submitted pet details
+    And the response body should match the pet schema
 
   @create @negative
   Scenario: Fail to create a pet with a malformed request body
@@ -29,6 +30,7 @@ Feature: Pet resource management
     Then the response status code should be 200
     And the response content type should be "application/json"
     And the response body should contain the submitted pet details
+    And the response body should match the pet schema
 
   @read @negative
   Scenario: Fail to retrieve a pet that does not exist
@@ -42,6 +44,7 @@ Feature: Pet resource management
     Then the response status code should be 200
     And the response content type should be "application/json"
     And every pet in the response should have status "available"
+    And the response body should match the pet list schema
 
   @update @positive
   Scenario: Update an existing pet's name and status
@@ -51,6 +54,7 @@ Feature: Pet resource management
     Then the response status code should be 200
     And the response body should contain the name "Maximus"
     And the response body should contain the status "sold"
+    And the response body should match the pet schema
 
   @update @negative
   Scenario: Fail to update a pet with a malformed request body

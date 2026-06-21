@@ -10,13 +10,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PetStepDefinitions {
-
-    private static final String MALFORMED_JSON_BODY = "{ \"name\": \"broken\", \"status\": ";
 
     private final ScenarioContext scenarioContext;
     private final PetStoreClient petStoreClient;
@@ -38,7 +37,7 @@ public class PetStepDefinitions {
 
     @Given("a malformed pet request body")
     public void aMalformedPetRequestBody() {
-        scenarioContext.setRawRequestBody(MALFORMED_JSON_BODY);
+        scenarioContext.setRawRequestBody(PetTestDataFactory.malformedPetJson());
     }
 
     @Given("a pet id that does not exist")
@@ -131,6 +130,18 @@ public class PetStepDefinitions {
     public void requestingTheDeletedPetShouldReturnStatusCode(int expectedStatusCode) {
         Response response = petStoreClient.getPetById(scenarioContext.getRequestPet().getId());
         assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    @Then("the response body should match the pet schema")
+    public void theResponseBodyShouldMatchThePetSchema() {
+        scenarioContext.getLastResponse().then().assertThat()
+                .body(matchesJsonSchemaInClasspath("schemas/pet-schema.json"));
+    }
+
+    @Then("the response body should match the pet list schema")
+    public void theResponseBodyShouldMatchThePetListSchema() {
+        scenarioContext.getLastResponse().then().assertThat()
+                .body(matchesJsonSchemaInClasspath("schemas/pet-list-schema.json"));
     }
 
     private long resolvePetId() {
